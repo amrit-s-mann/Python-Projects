@@ -1,0 +1,50 @@
+import random
+
+class AbstractGame:
+    def start(self):
+        while True:
+            play = input("Are you ready to play? ")
+            if play.lower() == "yes":
+                break
+        self.play()
+
+    def end(self):
+        print("The game has ended!")
+        restart = input("Would you like to play again? ")
+        if restart.lower == "yes":
+            self.reset()
+        
+    def play(self):
+        raise NotImplementedError("You must implement the Play method")
+    
+    def reset(self):
+        raise NotImplementedError("You must implement the Reset method")
+    
+class RandomGuesser(AbstractGame):
+    def __init__(self, rounds):
+        self.round = 0
+        self.rounds = rounds
+
+    def play(self):
+        print("Lets begin!")
+
+        while self.round < self.rounds:
+            self.round += 1
+
+            print(f"You are currently at round {self.round}")
+            random_num = random.randint(1, 10)
+            while True:
+                guess = input("Guess the number between 1 and 10: ")
+                if int(guess) == random_num:
+                    print("You got it!")
+                    break
+        self.end()
+                
+    def reset(self):
+        self.round = 0
+        print("Game has been reset!")
+        self.play()
+
+total_rounds = input("Enter the number of rounds to play: ")
+game = RandomGuesser(int(total_rounds))
+game.start()
